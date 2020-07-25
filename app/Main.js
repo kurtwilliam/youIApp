@@ -24,25 +24,21 @@ const Main = () => {
   const [screenDimensions, setScreenDimensions] = useState([0, 0]);
   const playerRef = useRef(null);
 
-  const getVideo = () => {
-    return fetch(
-      `https://www.googleapis.com/youtube/v3/search?part=${searchText}&key=[${API_KEY}])`
+  const getVideo = () =>
+    fetch(
+      `https://www.googleapis.com/youtube/v3/search?part=snippet&q=${searchText}&maxResults=1&key=${API_KEY}`
     )
       .then(response => response.json())
-      .then(jsonObj => setVideo(jsonObj))
+      .then(jsonObj => setVideo(jsonObj.items[0]))
       .catch(error => {
         console.error(error);
       });
-  };
 
   useEffect(() => {
     setScreenDimensions([
       Dimensions.get("window").width,
       Dimensions.get("window").height
     ]);
-
-    console.log("fetch", getVideo());
-    console.log(video);
   }, []);
   console.log("video", video);
 
@@ -53,24 +49,31 @@ const Main = () => {
           style={styles.search}
           value={searchText}
           onChangeText={text => setSearchText(text)}
+          onSubmitEditing={() => getVideo()}
         />
         <View style={styles.videoContainer}>
-          <YoutubePlayer
-            ref={playerRef}
-            height={(screenDimensions[0] * 9) / 16 - 16}
-            width={screenDimensions[0] - 16}
-            videoId={"AVAc1gYLZK0"}
-            play={playing}
-            onChangeState={event => console.log(event)}
-            onReady={() => console.log("ready")}
-            onError={e => console.log(e)}
-            // volume={100}
-            playbackRate={1}
-            initialPlayerParams={{
-              cc_lang_pref: "us",
-              showClosedCaptions: false
-            }}
-          />
+          {Object.keys(video).length === 0 ? (
+            <View style={styles.videoNull(screenDimensions[0])}>
+              <Text>Please search for a video above.</Text>
+            </View>
+          ) : (
+            <YoutubePlayer
+              ref={playerRef}
+              height={(screenDimensions[0] * 9) / 16 - 16}
+              width={screenDimensions[0] - 16}
+              videoId={video.id && video.id.videoId ? video.id.videoId : ""}
+              play={playing}
+              onChangeState={event => console.log(event)}
+              onReady={() => console.log("ready")}
+              onError={e => console.log(e)}
+              playbackRate={1}
+              initialPlayerParams={{
+                cc_lang_pref: "us",
+                showClosedCaptions: false
+              }}
+            />
+          )}
+
           <TouchableHighlight
             onPress={() => {
               console.log("pressed");
@@ -82,9 +85,19 @@ const Main = () => {
           </TouchableHighlight>
         </View>
         <View style={styles.videoInfoCont}>
-          <Text style={styles.videoInfo}>Title</Text>
-          <Text style={styles.videoInfo}>Description</Text>
-          <Text style={styles.videoInfo}>Channel Name</Text>
+          <Text numberOfLines={1} style={styles.videoInfo}>
+            {Object.keys(video).length === 0 ? "Title" : video.snippet.title}
+          </Text>
+          <Text numberOfLines={1} style={styles.videoInfo}>
+            {Object.keys(video).length === 0
+              ? "Description"
+              : video.snippet.description}
+          </Text>
+          <Text numberOfLines={1} style={styles.videoInfo}>
+            {Object.keys(video).length === 0
+              ? "Channel Name"
+              : video.snippet.channelTitle}
+          </Text>
         </View>
       </View>
     </SafeAreaView>
@@ -113,7 +126,13 @@ const styles = StyleSheet.create({
     borderColor: "grey",
     borderWidth: 1,
     paddingLeft: 4
-  }
+  },
+  videoNull: screenWidth => ({
+    justifyContent: "center",
+    alignItems: "center",
+    height: (screenWidth * 9) / 16 - 16,
+    width: screenWidth - 16
+  })
 });
 
 export default Main;
