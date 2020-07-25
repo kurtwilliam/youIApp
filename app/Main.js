@@ -105,17 +105,23 @@ const Main = () => {
         </View>
         <View style={styles.videoInfoCont}>
           <Text numberOfLines={4} style={styles.videoInfo}>
-            {typeof video === "object" && Object.keys(video).length > 0
+            {typeof video === "object" &&
+            Object.keys(video).length > 0 &&
+            !video.error
               ? video.snippet.title
               : "Title"}
           </Text>
           <Text numberOfLines={4} style={styles.videoInfo}>
-            {typeof video === "object" && Object.keys(video).length > 0
+            {typeof video === "object" &&
+            Object.keys(video).length > 0 &&
+            !video.error
               ? video.snippet.description
               : "Description"}
           </Text>
           <Text numberOfLines={4} style={styles.videoInfo}>
-            {typeof video === "object" && Object.keys(video).length > 0
+            {typeof video === "object" &&
+            Object.keys(video).length > 0 &&
+            !video.error
               ? video.snippet.channelTitle
               : "Channel Name"}
           </Text>
