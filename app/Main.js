@@ -15,7 +15,7 @@ import YoutubePlayer from "react-native-youtube-iframe";
 
 const API_KEY = "AIzaSyCdv2KFnYJWbo0LvwQ2BxXb-D0EHJM3MRM";
 
-const Main = () => {
+export default Main = () => {
   const [searchText, setSearchText] = useState("");
   const [video, setVideo] = useState({});
   const [playing, setPlaying] = useState(false);
@@ -169,7 +169,6 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     backgroundColor: "white"
   },
-  video: { width: "100%", minHeight: 250 },
   videoContainer: { width: "100%", marginTop: 8, marginLeft: -8 },
   videoInfo: {
     width: "100%",
@@ -198,5 +197,3 @@ const styles = StyleSheet.create({
     backgroundColor: "grey"
   })
 });
-
-export default Main;
