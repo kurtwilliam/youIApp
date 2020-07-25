@@ -1,22 +1,35 @@
 import { StatusBar } from "expo-status-bar";
-import React from "react";
-import { StyleSheet, Text, View } from "react-native";
+import React, { useState, useEffect } from "react";
+import { StyleSheet, Text, View, TextInput, SafeAreaView } from "react-native";
 
 const Main = () => {
+  const [searchText, setSearchText] = useState("Search");
+
   return (
-    <View style={styles.container}>
-      <Text>O</Text>
-      <StatusBar style="auto" />
-    </View>
+    <SafeAreaView style={styles.safeArea}>
+      <View style={styles.container}>
+        <TextInput
+          style={styles.search}
+          value={searchText}
+          onChangeText={text => setSearchText(text)}
+        />
+      </View>
+    </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center"
+    padding: 8
+  },
+  safeArea: {
+    flex: 1
+  },
+  search: {
+    paddingLeft: 4,
+    borderColor: "grey",
+    borderWidth: 1
   }
 });
 
