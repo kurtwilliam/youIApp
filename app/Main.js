@@ -29,7 +29,16 @@ const Main = () => {
       `https://www.googleapis.com/youtube/v3/search?part=snippet&q=${searchText}&maxResults=1&key=${API_KEY}`
     )
       .then(response => response.json())
-      .then(jsonObj => setVideo(jsonObj.items[0]))
+      .then(jsonObj => {
+        // if length of results array is 0 (no results)
+        // make object error
+        console.log(jsonObj);
+        setVideo(
+          jsonObj.items.length > 0
+            ? jsonObj.items[0]
+            : { error: "Error: no results for this search." }
+        );
+      })
       .catch(error => {
         console.error(error);
       });
@@ -41,7 +50,7 @@ const Main = () => {
     ]);
   }, []);
   console.log("video", video);
-
+  console.log;
   return (
     <SafeAreaView style={styles.safeArea}>
       <View style={styles.container}>
@@ -52,11 +61,9 @@ const Main = () => {
           onSubmitEditing={() => getVideo()}
         />
         <View style={styles.videoContainer}>
-          {Object.keys(video).length === 0 ? (
-            <View style={styles.videoNull(screenDimensions[0])}>
-              <Text>Please search for a video above.</Text>
-            </View>
-          ) : (
+          {typeof video === "object" &&
+          Object.keys(video).length > 0 &&
+          !video.error ? (
             <YoutubePlayer
               ref={playerRef}
               height={(screenDimensions[0] * 9) / 16 - 16}
@@ -64,7 +71,7 @@ const Main = () => {
               videoId={video.id && video.id.videoId ? video.id.videoId : ""}
               play={playing}
               onChangeState={event =>
-                event === "playing" ? setPlaying(true) : setPlaying(false)
+                event === "paused" ? setPlaying(false) : setPlaying(true)
               }
               onReady={() => console.log("ready")}
               onError={e => console.log(e)}
@@ -74,6 +81,14 @@ const Main = () => {
                 showClosedCaptions: false
               }}
             />
+          ) : (
+            <View style={styles.videoNull(screenDimensions[0])}>
+              <Text>
+                {video && video.error
+                  ? video.error
+                  : "Please search for a video above."}
+              </Text>
+            </View>
           )}
 
           <TouchableWithoutFeedback
@@ -90,17 +105,19 @@ const Main = () => {
         </View>
         <View style={styles.videoInfoCont}>
           <Text numberOfLines={4} style={styles.videoInfo}>
-            {Object.keys(video).length === 0 ? "Title" : video.snippet.title}
+            {typeof video === "object" && Object.keys(video).length > 0
+              ? video.snippet.title
+              : "Title"}
           </Text>
           <Text numberOfLines={4} style={styles.videoInfo}>
-            {Object.keys(video).length === 0
-              ? "Description"
-              : video.snippet.description}
+            {typeof video === "object" && Object.keys(video).length > 0
+              ? video.snippet.description
+              : "Description"}
           </Text>
           <Text numberOfLines={4} style={styles.videoInfo}>
-            {Object.keys(video).length === 0
-              ? "Channel Name"
-              : video.snippet.channelTitle}
+            {typeof video === "object" && Object.keys(video).length > 0
+              ? video.snippet.channelTitle
+              : "Channel Name"}
           </Text>
         </View>
       </View>
