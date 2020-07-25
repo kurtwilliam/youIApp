@@ -15,7 +15,7 @@ import YoutubePlayer from "react-native-youtube-iframe";
 
 const API_KEY = "AIzaSyCdv2KFnYJWbo0LvwQ2BxXb-D0EHJM3MRM";
 
-export default Main = () => {
+const Main = () => {
   const [searchText, setSearchText] = useState("");
   const [video, setVideo] = useState({});
   const [playing, setPlaying] = useState(false);
@@ -79,7 +79,15 @@ export default Main = () => {
               }}
             />
           ) : (
-            <View style={styles.videoNull(screenDimensions[0])}>
+            <View
+              style={[
+                styles.videoNull,
+                {
+                  height: (screenDimensions[0] * 9) / 16,
+                  width: screenDimensions[0]
+                }
+              ]}
+            >
               <Text>
                 {video && video.error
                   ? video.error
@@ -189,11 +197,12 @@ const styles = StyleSheet.create({
     color: "#21272f",
     fontSize: 14
   },
-  videoNull: screenWidth => ({
+  videoNull: {
     justifyContent: "center",
     alignItems: "center",
-    height: (screenWidth * 9) / 16,
-    width: screenWidth,
+
     backgroundColor: "grey"
-  })
+  }
 });
+
+export default Main;
