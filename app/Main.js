@@ -8,7 +8,7 @@ import {
   SafeAreaView,
   Platform,
   Button,
-  TouchableHighlight,
+  TouchableWithoutFeedback,
   Dimensions
 } from "react-native";
 
@@ -63,7 +63,9 @@ const Main = () => {
               width={screenDimensions[0] - 16}
               videoId={video.id && video.id.videoId ? video.id.videoId : ""}
               play={playing}
-              onChangeState={event => console.log(event)}
+              onChangeState={event =>
+                event === "playing" ? setPlaying(true) : setPlaying(false)
+              }
               onReady={() => console.log("ready")}
               onError={e => console.log(e)}
               playbackRate={1}
@@ -74,26 +76,28 @@ const Main = () => {
             />
           )}
 
-          <TouchableHighlight
-            onPress={() => {
-              console.log("pressed");
-            }}
+          <TouchableWithoutFeedback
+            onPress={() => (playing ? setPlaying(false) : setPlaying(true))}
           >
             <View>
-              <AntDesign name="caretright" size={24} color="black" />
+              {playing ? (
+                <AntDesign name="pause" size={24} color="black" />
+              ) : (
+                <AntDesign name="caretright" size={24} color="black" />
+              )}
             </View>
-          </TouchableHighlight>
+          </TouchableWithoutFeedback>
         </View>
         <View style={styles.videoInfoCont}>
-          <Text numberOfLines={1} style={styles.videoInfo}>
+          <Text numberOfLines={4} style={styles.videoInfo}>
             {Object.keys(video).length === 0 ? "Title" : video.snippet.title}
           </Text>
-          <Text numberOfLines={1} style={styles.videoInfo}>
+          <Text numberOfLines={4} style={styles.videoInfo}>
             {Object.keys(video).length === 0
               ? "Description"
               : video.snippet.description}
           </Text>
-          <Text numberOfLines={1} style={styles.videoInfo}>
+          <Text numberOfLines={4} style={styles.videoInfo}>
             {Object.keys(video).length === 0
               ? "Channel Name"
               : video.snippet.channelTitle}
