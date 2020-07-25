@@ -5,7 +5,7 @@ import { StyleSheet, Text, View } from "react-native";
 const Main = () => {
   return (
     <View style={styles.container}>
-      <Text>Open up Main.js to start working on your app!</Text>
+      <Text>O</Text>
       <StatusBar style="auto" />
     </View>
   );
