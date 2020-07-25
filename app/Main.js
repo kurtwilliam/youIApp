@@ -6,9 +6,12 @@ import {
   View,
   TextInput,
   SafeAreaView,
-  Platform
+  Platform,
+  Button,
+  TouchableHighlight
 } from "react-native";
 
+import { AntDesign } from "@expo/vector-icons";
 import { Video } from "expo-av";
 
 const Main = () => {
@@ -33,6 +36,15 @@ const Main = () => {
             isMuted={false}
             resizeMode="contain"
           />
+          <TouchableHighlight
+            onPress={() => {
+              console.log("pressed");
+            }}
+          >
+            <View>
+              <AntDesign name="caretright" size={24} color="black" />
+            </View>
+          </TouchableHighlight>
         </View>
       </View>
     </SafeAreaView>
