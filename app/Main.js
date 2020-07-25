@@ -42,7 +42,7 @@ const Main = () => {
             }}
           >
             <View>
-              <AntDesign name="caretright" size={24} color="green" />
+              <AntDesign name="caretright" size={24} color="black" />
             </View>
           </TouchableHighlight>
         </View>
