@@ -42,9 +42,14 @@ const Main = () => {
             }}
           >
             <View>
-              <AntDesign name="caretright" size={24} color="grey" />
+              <AntDesign name="caretright" size={24} color="black" />
             </View>
           </TouchableHighlight>
+        </View>
+        <View style={styles.videoInfoCont}>
+          <Text style={styles.videoInfo}>Title</Text>
+          <Text style={styles.videoInfo}>Description</Text>
+          <Text style={styles.videoInfo}>Channel Name</Text>
         </View>
       </View>
     </SafeAreaView>
@@ -66,7 +71,14 @@ const styles = StyleSheet.create({
     borderWidth: 1
   },
   video: { width: "100%", minHeight: 250 },
-  videoContainer: { width: "100%", marginTop: 8 }
+  videoContainer: { width: "100%", marginTop: 8 },
+  videoInfo: {
+    width: "100%",
+    marginTop: 8,
+    borderColor: "grey",
+    borderWidth: 1,
+    paddingLeft: 4
+  }
 });
 
 export default Main;
